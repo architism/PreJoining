@@ -10,7 +10,7 @@ CREATE TABLE Student
 ( student_id INT PRIMARY KEY AUTO_INCREMENT,
   first_name VARCHAR(20) NOT NULL, last_name VARCHAR(20) NOT NULL,
   email VARCHAR(100) NOT NULL UNIQUE, dob DATE NOT NULL, advisor_id INT,
-  student_status INT NOT NULL, CONSTRAINT FK_advisor_id FOREIGN KEY(advisor_id) REFERENCES Advisor(advisor_id)
+  status INT NOT NULL, CONSTRAINT FK_advisor_id FOREIGN KEY(advisor_id) REFERENCES Advisor(advisor_id)
   ON DELETE SET NULL);
     
 CREATE TABLE Course
