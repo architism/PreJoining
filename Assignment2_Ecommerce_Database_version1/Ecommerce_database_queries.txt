@@ -34,6 +34,21 @@ price DECIMAL(10,2) NOT NULL,
 FOREIGN KEY(order_id) REFERENCES Orders(order_id),
 FOREIGN KEY(product_id) REFERENCES Products(product_id));
 
+CREATE INDEX idx_signup_date 
+ON Customers(signup_date);
+
+CREATE INDEX idx_city
+ON Customers(city);
+
+CREATE INDEX idx_order_date
+ON Orders(order_date);
+
+CREATE INDEX idx_total_amount
+ON Orders(total_amount);
+
+CREATE INDEX idx_category
+ON Products(category);
+
 -- Inserting values into tables
 
 INSERT INTO Customers (first_name, last_name, email, city, signup_date) VALUES
@@ -93,11 +108,11 @@ INSERT INTO Order_details (order_id, product_id, quantity, price) VALUES
 
 
 -- Query 1
-SELECT * 
+SELECT customer_id, first_name, last_name, email, city, signup_date 
 FROM Customers;
 
 -- Query 2
-SELECT * 
+SELECT order_id, customer_id, order_date, total_amount 
 FROM Orders 
 WHERE order_date >= DATE_SUB(CURDATE(), INTERVAL 30 DAY);
 
@@ -111,17 +126,17 @@ FROM Products
 GROUP BY category;
 
 -- Query 5
-SELECT * 
+SELECT customer_id, first_name, last_name, email, city, signup_date 
 FROM Customers
 WHERE city = 'Mumbai';
 
 -- Query 6
-SELECT *
+SELECT order_id, customer_id, order_date, total_amount
 FROM Orders
 WHERE total_amount > 5000.00;
 
 -- Query 7
-SELECT *
+SELECT customer_id, first_name, last_name, email, city, signup_date
 FROM Customers
 WHERE signup_date > '2024-01-01';
 
@@ -134,7 +149,7 @@ SELECT Order_details.order_id, Products.product_name, Order_details.quantity, Pr
 FROM Products JOIN Order_details ON Products.product_id = Order_details.product_id ORDER BY order_id;
 
 -- Query 10
-SELECT *
+SELECT customer_id, first_name, last_name, email, city, signup_date
 FROM Customers
 WHERE customer_id NOT IN (SELECT DISTINCT Customers.customer_id 
 FROM Customers JOIN Orders ON Customers.customer_id = Orders.customer_id);
@@ -168,7 +183,7 @@ Group by c.customer_id) sub
 WHERE total_spent > ( SELECT AVG(total_amount) FROM Orders); 
 
 -- Query 16
-SELECT *
+SELECT product_id, product_name, category, price
 FROM Products
 WHERE product_id NOT IN (SELECT DISTINCT product_id FROM Order_details);
 
