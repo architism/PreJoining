@@ -1,0 +1,132 @@
+Loading vehicles from file.
+Displaying all loaded vehicles.
+
+--- Cars ---
+Brand : Toyota
+Model : Corolla
+Rental Price/Day : 45.5
+Number of Doors : 4
+Automatic : true
+
+Brand : Ford
+Model : Focus
+Rental Price/Day : 50.0
+Number of Doors : 5
+Automatic : false
+
+Brand : Chevrolet
+Model : Malibu
+Rental Price/Day : 55.0
+Number of Doors : 4
+Automatic : true
+
+--- Bikes ---
+Brand : Yamaha
+Model : R15
+Rental Price/Day : 30.0
+Has Gear : true
+Engine Capacity : 150 cc
+
+Brand : Honda
+Model : CBR
+Rental Price/Day : 35.5
+Has Gear : false
+Engine Capacity : 250 cc
+
+Brand : Suzuki
+Model : GSX
+Rental Price/Day : 40.0
+Has Gear : true
+Engine Capacity : 200 cc
+
+Do you want to enter more vehicles?(yes/no) : 
+yes
+Enter number of vehicles  to be entered : 
+1
+
+Enter type of vehicle : 
+car
+
+--- Enter Car Details --- 
+Enter brand : Toyota
+Enter model : Hycross
+Enter rental price per day : 300.0
+Enter number of doors : 4
+Is it automatic (true/false)? : true
+
+Updated vehicle list.
+
+--- Cars ---
+Brand : Toyota
+Model : Corolla
+Rental Price/Day : 45.5
+Number of Doors : 4
+Automatic : true
+
+Brand : Ford
+Model : Focus
+Rental Price/Day : 50.0
+Number of Doors : 5
+Automatic : false
+
+Brand : Chevrolet
+Model : Malibu
+Rental Price/Day : 55.0
+Number of Doors : 4
+Automatic : true
+
+Brand : Toyota
+Model : Hycross
+Rental Price/Day : 300.0
+Number of Doors : 4
+Automatic : true
+
+--- Bikes ---
+Brand : Yamaha
+Model : R15
+Rental Price/Day : 30.0
+Has Gear : true
+Engine Capacity : 150 cc
+
+Brand : Honda
+Model : CBR
+Rental Price/Day : 35.5
+Has Gear : false
+Engine Capacity : 250 cc
+
+Brand : Suzuki
+Model : GSX
+Rental Price/Day : 40.0
+Has Gear : true
+Engine Capacity : 200 cc
+
+
+Enter brand to be searched : 
+Toyota
+
+Searching for brand Toyota
+
+Brand : Toyota
+Model : Corolla
+Rental Price/Day : 45.5
+Number of Doors : 4
+Automatic : true
+
+Brand : Toyota
+Model : Hycross
+Rental Price/Day : 300.0
+Number of Doors : 4
+Automatic : true
+
+Enter number of days to calculate total rent : 
+3
+
+Total rent for 3 days : 
+
+Toyota Corolla = 136.5
+Ford Focus = 150.0
+Chevrolet Malibu = 165.0
+Toyota Hycross = 900.0
+Yamaha R15 = 90.0
+Honda CBR = 106.5
+Suzuki GSX = 120.0
