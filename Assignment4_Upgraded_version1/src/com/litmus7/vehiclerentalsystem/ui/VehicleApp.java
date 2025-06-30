@@ -1,28 +1,33 @@
-package com.litmus7.vehiclerentalsystem;
+package com.litmus7.vehiclerentalsystem.ui;
 
 import java.util.List;
 import java.util.Scanner;
 
+import com.litmus7.vehiclerentalsystem.controller.VehicleController;
 import com.litmus7.vehiclerentalsystem.dto.Bike;
 import com.litmus7.vehiclerentalsystem.dto.Car;
+import com.litmus7.vehiclerentalsystem.dto.Response;
 import com.litmus7.vehiclerentalsystem.dto.Vehicle;
-import com.litmus7.vehiclerentalsystem.service.VehicleService;
 
 /**
- * This class contains main method and method to display the list.
+ * This class contains main method and method to display the list of vehicles.
  */
 public class VehicleApp {
 	public static void main(String args[]) {
-		VehicleService service = new VehicleService();
-		List<Vehicle> vehicles;
+		VehicleController vehicleController = new VehicleController();
+		List<Vehicle> vehicles = null;
 
 		System.out.println("Loading vehicles from file.");
-		vehicles = service.loadVehiclesFromFile("vehicles.txt");
+		Response response = vehicleController.loadVehiclesFromFile("vehicles.txt");
 
-		System.out.println("Displaying all loaded vehicles.");
-		System.out.println();
-
-		VehicleApp.displayVehicles(vehicles);
+		if (response.getStatusCode() == 200) {
+			System.out.println("Vehicles loaded successfully");
+			System.out.println("Displaying all loaded vehicles.");
+			vehicles = response.getVehicles();
+			VehicleApp.displayVehicles(vehicles);
+		} else {
+			System.out.println(response.getErrorMessage());
+		}
 
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Do you want to enter more vehicles?(yes/no) : ");
@@ -57,8 +62,19 @@ public class VehicleApp {
 					boolean isAutomatic = sc.nextBoolean();
 					sc.nextLine();
 
-					vehicles = service.addVehicle(vehicles,
+					response = vehicleController.addVehicle(vehicles,
 							new Car(brand, model, rentalPricePerDay, numberOfDoors, isAutomatic));
+
+					if (response.getStatusCode() == 200) {
+						System.out.println("Vehicle added successfully");
+						vehicles = response.getVehicles();
+						System.out.println("Updated vehicle list");
+						VehicleApp.displayVehicles(vehicles);
+					} else {
+						System.out.println();
+						System.out.println(response.getErrorMessage());
+					}
+
 				}
 
 				else if (type.equalsIgnoreCase("Bike")) {
@@ -80,27 +96,47 @@ public class VehicleApp {
 					int engineCapacity = sc.nextInt();
 					sc.nextLine();
 
-					vehicles = service.addVehicle(vehicles,
+					response = vehicleController.addVehicle(vehicles,
 							new Bike(brand, model, rentalPricePerDay, hasGear, engineCapacity));
+
+					if (response.getStatusCode() == 200) {
+						System.out.println("Vehicle added successfully");
+						vehicles = response.getVehicles();
+						System.out.println("Updated vehicle list");
+						VehicleApp.displayVehicles(vehicles);
+					} else {
+						System.out.println(response.getErrorMessage());
+					}
+				}
+
+				else {
+					System.out.println("Invalid vehicle type");
 				}
 			}
-
-			System.out.println();
-			System.out.println("Updated vehicle list.");
-			System.out.println();
-			VehicleApp.displayVehicles(vehicles);
 		}
 
 		System.out.println();
 
-		System.out.println("Do you want to search for a brand?(yes/no) : ");
+		System.out.println("Do you want to search for a vehicle?(yes/no) : ");
 		choice = sc.nextLine();
-		if (choice.equalsIgnoreCase("yes")) {
 
+		if (choice.equalsIgnoreCase("yes")) {
 			System.out.println("Enter brand to be searched : ");
 			String brand = sc.nextLine();
+			System.out.println("Enter model to be searched : ");
+			String model = sc.nextLine();
 			System.out.println();
-			service.searchBrand(vehicles, brand);
+			response = vehicleController.searchVehicle(vehicles, brand, model);
+
+			if (response.getStatusCode() == 200) {
+				System.out.println("Vehicle has been found");
+				Vehicle vehicle = response.getVehicle();
+				System.out.println(vehicle);
+
+			} else {
+				System.out.println(response.getErrorMessage());
+			}
+
 		}
 		System.out.println();
 		System.out.println("Do you want to calculate total rent?(yes/no) : ");
@@ -111,7 +147,14 @@ public class VehicleApp {
 			int dayCount = sc.nextInt();
 			sc.nextLine();
 			System.out.println();
-			service.totalRentalPrice(vehicles, dayCount);
+
+			response = vehicleController.totalRentalPrice(vehicles, dayCount);
+			if (response.getStatusCode() == 200) {
+				System.out.println(response.getTotalRentalPrice());
+
+			} else {
+				System.out.println(response.getErrorMessage());
+			}
 		}
 	}
 
@@ -124,7 +167,7 @@ public class VehicleApp {
 	public static void displayVehicles(List<Vehicle> vehicles) {
 
 		for (Vehicle vehicle : vehicles) {
-			vehicle.displayDetails();
+			System.out.println(vehicle);
 			System.out.println();
 		}
 	}

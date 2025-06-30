@@ -1,15 +1,11 @@
 package com.litmus7.vehiclerentalsystem.service;
 
-import java.io.BufferedReader;
-
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.litmus7.vehiclerentalsystem.dto.Car;
 import com.litmus7.vehiclerentalsystem.dto.Vehicle;
-import com.litmus7.vehiclerentalsystem.dto.Bike;
+import com.litmus7.vehiclerentalsystem.exception.VehicleDataAccessException;
+import com.litmus7.vehiclerentalsystem.exception.VehicleServiceException;
+import com.litmus7.vehiclerentalsystem.dao.VehicleFileDao;
 
 /**
  * Class which provides services such as loading vehicles from file, adding new
@@ -24,117 +20,76 @@ public class VehicleService {
 	 * @param filePath which is a String
 	 * @return list of vehicles
 	 */
-	public List<Vehicle> loadVehiclesFromFile(String filePath) {
+	public List<Vehicle> loadVehiclesFromFile(String filePath) throws VehicleServiceException {
 
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
+		VehicleFileDao vehicleFileDao = new VehicleFileDao();
 
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(filePath));
-			String line;
-			while ((line = reader.readLine()) != null) {
-				String[] parts = line.split(",");
-				if (parts[0].equalsIgnoreCase("Car")) {
+			vehicles = vehicleFileDao.loadVehiclesFromFile(filePath);
 
-					String brand = parts[1];
-					String model = parts[2];
-					double rentalPricePerDay = Double.parseDouble(parts[3]);
-					int numberOfDoors = Integer.parseInt(parts[4]);
-					boolean isAutomatic = Boolean.parseBoolean(parts[5]);
-
-					vehicles.add(new Car(brand, model, rentalPricePerDay, numberOfDoors, isAutomatic));
-				}
-
-				else {
-
-					String brand = parts[1];
-					String model = parts[2];
-					double rentalPricePerDay = Double.valueOf(parts[3]);
-					Boolean hasGear = Boolean.parseBoolean(parts[4]);
-					int engineCapacity = Integer.parseInt(parts[5]);
-
-					vehicles.add(new Bike(brand, model, rentalPricePerDay, hasGear, engineCapacity));
-
-				}
-
-			}
-			reader.close();
-		}
-
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (VehicleDataAccessException e) {
+			throw new VehicleServiceException(e.getMessage(), e);
 		}
 		return vehicles;
 
 	}
 
 	/**
-	 * This method adds a new car to the list.
+	 * This method adds a new vehicle to the list.
 	 * 
 	 * @param vehicles which is a Vehicle list
-	 * @param car      which is a Car object
+	 * @param vehicle  which is a Vehicle object
 	 * @return list of vehicles
+	 * @throws VehicleServiceException
 	 */
-	public List<Vehicle> addVehicle(List<Vehicle> vehicles, Car car) {
-		vehicles.add(car);
-		return vehicles;
+	public List<Vehicle> addVehicle(List<Vehicle> vehicles, Vehicle vehicle) throws VehicleServiceException {
+
+		if (!vehicles.contains(vehicle)) {
+			vehicles.add(vehicle);
+			return vehicles;
+		}
+		throw new VehicleServiceException("Cannot add as vehicle already exists");
 
 	}
 
 	/**
-	 * This method adds a new bike to the list.
-	 * 
-	 * @param vehicles which is a Vehicle list
-	 * @param bike     which is a Bike object
-	 * @return list of vehicles
-	 */
-
-	public List<Vehicle> addVehicle(List<Vehicle> vehicles, Bike bike) {
-		vehicles.add(bike);
-		return vehicles;
-	}
-
-	/**
-	 * This method searches for a brand.
 	 * 
 	 * @param vehicles which is a list of vehicles
 	 * @param brand    which is a String
+	 * @param model    which is a String
+	 * @return vehicle which is a Vehicle object
+	 * @throws VehicleServiceException
 	 */
 
-	public void searchBrand(List<Vehicle> vehicles, String brand) {
-
-		System.out.println("Searching for brand " + brand);
-		int flag = 0;
+	public Vehicle searchVehicle(List<Vehicle> vehicles, String brand, String model) throws VehicleServiceException {
 
 		for (Vehicle vehicle : vehicles) {
-			if (vehicle.getBrand().equalsIgnoreCase(brand)) {
-				System.out.println();
-				vehicle.displayDetails();
-				flag = 1;
-
+			if (vehicle.getBrand().equalsIgnoreCase(brand) && vehicle.getModel().equalsIgnoreCase(model)) {
+				return vehicle;
 			}
-
 		}
-		if (flag == 0)
-			System.out.println(brand + " Brand is not found");
 
+		throw new VehicleServiceException("Vehicle not found");
 	}
 
 	/**
-	 * This method calculates total rent for vehicles.
+	 * This method calculates total rent for a vehicles for a specified day count.
 	 * 
-	 * @param vehicles which is a Vehicle list
-	 * @param dayCount which is an integer
+	 * @param vehicles which is a List
+	 * @param dayCount which is an Integer
+	 * @return totalRentalPrice which is a List
 	 */
-	public void totalRentalPrice(List<Vehicle> vehicles, int dayCount) {
+	public List<String> totalRentalPrice(List<Vehicle> vehicles, int dayCount) {
 
-		System.out.println("Total rent for " + dayCount + " days : ");
-		System.out.println();
+		List<String> totalRentalPrice = new ArrayList<String>();
 		for (Vehicle vehicle : vehicles) {
-			System.out.println(
+			totalRentalPrice.add(
 					vehicle.getBrand() + " " + vehicle.getModel() + " = " + vehicle.getRentalPricePerDay() * dayCount);
+
 		}
 
-	}
+		return totalRentalPrice;
 
+	}
 }

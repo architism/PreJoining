@@ -1,6 +1,6 @@
 package com.litmus7.vehiclerentalsystem.dto;
 
-import java.util.Scanner;
+import java.util.Objects;
 
 /**
  * This class contains data of vehicle.
@@ -37,29 +37,21 @@ public class Vehicle {
 		this.rentalPricePerDay = rentalPricePerDay;
 	}
 
-	/**
-	 * This method takes user input for brand, model and rental price per day of
-	 * vehicle.
-	 */
-	public void inputDetails() {
-		Scanner sc = new Scanner(System.in);
-		System.out.print("Enter brand : ");
-		brand = sc.nextLine();
-		System.out.print("Enter model : ");
-		model = sc.nextLine();
-		System.out.print("Enter rental price per day : ");
-		rentalPricePerDay = sc.nextDouble();
-		sc.nextLine();
+	@Override
+	public int hashCode() {
+		return Objects.hash(brand, model);
 	}
 
-	/**
-	 * This method displays data of vehicle object.
-	 */
-
-	public void displayDetails() {
-		System.out.println("Brand : " + brand);
-		System.out.println("Model : " + model);
-		System.out.println("Rental Price/Day : " + rentalPricePerDay);
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Vehicle other = (Vehicle) obj;
+		return Objects.equals(brand, other.brand) && Objects.equals(model, other.model);
 	}
 
 	public String getBrand() {
@@ -72,6 +64,11 @@ public class Vehicle {
 
 	public double getRentalPricePerDay() {
 		return rentalPricePerDay;
+	}
+
+	@Override
+	public String toString() {
+		return "Vehicle [brand=" + brand + ", model=" + model + ", rentalPricePerDay=" + rentalPricePerDay + "]";
 	}
 
 }

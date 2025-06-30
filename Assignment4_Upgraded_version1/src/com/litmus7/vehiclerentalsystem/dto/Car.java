@@ -36,31 +36,17 @@ public class Car extends Vehicle {
 		this.isAutomatic = isAutomatic;
 	}
 
-	/**
-	 * This method calls input method of parent class and also takes user input for
-	 * number of doors and whether the car is automatic or not.
-	 */
-
-	public void inputDetails() {
-		System.out.println(" --- Enter Car Details--- ");
-		super.inputDetails();
-		Scanner sc = new Scanner(System.in);
-		System.out.print("Enter number of doors : ");
-		numberOfDoors = sc.nextInt();
-		sc.nextLine();
-		System.out.print("Is it automatic (true/false)?  : ");
-		isAutomatic = sc.nextBoolean();
-		sc.nextLine();
-	}
+	
 
 	/**
 	 * This method displays the data of car object.
 	 */
 
-	public void displayDetails() {
-		super.displayDetails();
-		System.out.println("Number of Doors : " + numberOfDoors);
-		System.out.println("Automatic : " + isAutomatic);
+	
+	@Override
+	public String toString() {
+		return "Car [brand = " + getBrand() + ", model = " + getModel() + ", rentalPricePerDay = " + getRentalPricePerDay()
+				+ ",  numberOfDoors = " + numberOfDoors + ", isAutomatic = " + isAutomatic + "]";
 	}
 
 	
