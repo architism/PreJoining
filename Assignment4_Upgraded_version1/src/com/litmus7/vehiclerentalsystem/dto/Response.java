@@ -1,18 +1,14 @@
 package com.litmus7.vehiclerentalsystem.dto;
 
-import java.util.List;
-
 /**
  * This class defines responses returned by the VehicleController.
  */
 
-public class Response {
+public class Response<T> {
 
 	private String errorMessage;
 	private int statusCode;
-	private List<Vehicle> vehicles;
-	private Vehicle vehicle;
-	private List<String> totalRentalPrice;
+	private T responseItem;
 
 	public String getErrorMessage() {
 		return errorMessage;
@@ -30,28 +26,12 @@ public class Response {
 		this.statusCode = statusCode;
 	}
 
-	public List<Vehicle> getVehicles() {
-		return vehicles;
+	public T getResponseItem() {
+		return responseItem;
 	}
 
-	public void setVehicles(List<Vehicle> vehicles) {
-		this.vehicles = vehicles;
-	}
-
-	public Vehicle getVehicle() {
-		return vehicle;
-	}
-
-	public void setVehicle(Vehicle vehicle) {
-		this.vehicle = vehicle;
-	}
-
-	public List<String> getTotalRentalPrice() {
-		return totalRentalPrice;
-	}
-
-	public void setTotalRentalPrice(List<String> totalRentalPrice) {
-		this.totalRentalPrice = totalRentalPrice;
+	public void setResponseItem(T responseItem) {
+		this.responseItem = responseItem;
 	}
 
 }

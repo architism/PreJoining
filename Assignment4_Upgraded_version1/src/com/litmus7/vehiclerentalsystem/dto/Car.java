@@ -1,6 +1,6 @@
 package com.litmus7.vehiclerentalsystem.dto;
 
-import java.util.Scanner;
+
 
 /**
  * This class contains data of car object which inherits from vehicle.

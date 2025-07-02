@@ -1,6 +1,5 @@
 package com.litmus7.vehiclerentalsystem.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.litmus7.vehiclerentalsystem.dto.Response;
@@ -21,9 +20,9 @@ public class VehicleController {
 
 	VehicleService vehicleService = new VehicleService();
 
-	public Response loadVehiclesFromFile(String filePath) {
+	public Response<List<Vehicle>> loadVehiclesFromFile(String filePath) {
 
-		Response response = new Response();
+		Response<List<Vehicle>> response = new Response<>();
 		List<Vehicle> vehicles = null;
 
 		if (filePath == null) {
@@ -35,12 +34,12 @@ public class VehicleController {
 		try {
 			vehicles = vehicleService.loadVehiclesFromFile(filePath);
 			response.setStatusCode(SUCCESS_STATUS_CODE);
-			response.setVehicles(vehicles);
+			response.setResponseItem(vehicles);
 
 		} catch (VehicleServiceException e) {
 
 			response.setStatusCode(ERROR_STATUS_CODE);
-			response.setErrorMessage("Could not load vehicle data");
+			response.setErrorMessage(e.getMessage());
 
 		}
 
@@ -48,8 +47,8 @@ public class VehicleController {
 
 	}
 
-	public Response addVehicle(List<Vehicle> vehicles, Vehicle vehicle) {
-		Response response = new Response();
+	public Response<List<Vehicle>> addVehicle(List<Vehicle> vehicles, Vehicle vehicle) {
+		Response<List<Vehicle>> response = new Response<>();
 		List<Vehicle> vehicles1 = null;
 
 		if (vehicles == null) {
@@ -66,7 +65,7 @@ public class VehicleController {
 
 		try {
 			vehicles1 = vehicleService.addVehicle(vehicles, vehicle);
-			response.setVehicles(vehicles1);
+			response.setResponseItem(vehicles1);
 			response.setStatusCode(SUCCESS_STATUS_CODE);
 		} catch (VehicleServiceException e) {
 
@@ -78,9 +77,9 @@ public class VehicleController {
 
 	}
 
-	public Response searchVehicle(List<Vehicle> vehicles, String brand, String model) {
+	public Response<Vehicle> searchVehicle(List<Vehicle> vehicles, String brand, String model) {
 
-		Response response = new Response();
+		Response<Vehicle> response = new Response<>();
 
 		if (vehicles == null) {
 			response.setStatusCode(ERROR_STATUS_CODE);
@@ -96,7 +95,7 @@ public class VehicleController {
 
 		try {
 			Vehicle vehicle = vehicleService.searchVehicle(vehicles, brand, model);
-			response.setVehicle(vehicle);
+			response.setResponseItem(vehicle);
 			response.setStatusCode(SUCCESS_STATUS_CODE);
 
 		} catch (VehicleServiceException e) {
@@ -107,9 +106,9 @@ public class VehicleController {
 		return response;
 	}
 
-	public Response totalRentalPrice(List<Vehicle> vehicles, int dayCount) {
+	public Response<List<String>> totalRentalPrice(List<Vehicle> vehicles, int dayCount) {
 
-		Response response = new Response();
+		Response<List<String>> response = new Response<>();
 		if (vehicles == null) {
 			response.setStatusCode(ERROR_STATUS_CODE);
 			response.setErrorMessage("Cannot calculate rent for empty list of vehicles");
@@ -123,7 +122,7 @@ public class VehicleController {
 		}
 
 		List<String> totalRentalPrice = vehicleService.totalRentalPrice(vehicles, dayCount);
-		response.setTotalRentalPrice(totalRentalPrice);
+		response.setResponseItem(totalRentalPrice);
 		response.setStatusCode(SUCCESS_STATUS_CODE);
 		return response;
 

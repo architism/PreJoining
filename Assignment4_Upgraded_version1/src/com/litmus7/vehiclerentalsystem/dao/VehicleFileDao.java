@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import java.util.List;
 
 import com.litmus7.vehiclerentalsystem.dto.Bike;
@@ -29,8 +30,8 @@ public class VehicleFileDao {
 
 		List<Vehicle> vehicles = new ArrayList<Vehicle>();
 
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(filePath));
+		try (BufferedReader reader = new BufferedReader(new FileReader(filePath));) {
+
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] parts = line.split(",");
@@ -58,7 +59,7 @@ public class VehicleFileDao {
 				}
 
 			}
-			reader.close();
+
 		}
 
 		catch (FileNotFoundException e) {
@@ -66,7 +67,11 @@ public class VehicleFileDao {
 		}
 
 		catch (IOException e) {
-			throw new VehicleDataAccessException(e.getMessage());
+			throw new VehicleDataAccessException(e.getMessage(), e);
+		}
+
+		catch (NumberFormatException e) {
+			throw new VehicleDataAccessException("Input is not in expected format", e);
 		}
 		return vehicles;
 

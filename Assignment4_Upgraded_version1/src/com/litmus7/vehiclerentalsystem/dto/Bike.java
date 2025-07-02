@@ -1,7 +1,5 @@
 package com.litmus7.vehiclerentalsystem.dto;
 
-import java.util.Scanner;
-
 /**
  * This class contains data of bike object which inherits from vehicle.
  */
@@ -48,8 +46,8 @@ public class Bike extends Vehicle {
 
 	@Override
 	public String toString() {
-		return "Bike [brand = " + getBrand() + ", model = " + getModel() + ", rentalPricePerDay = " + getRentalPricePerDay()
-				+ ", hasGear = " + hasGear + ", engineCapacity = " + engineCapacity + "]";
+		return "Bike [brand = " + getBrand() + ", model = " + getModel() + ", rentalPricePerDay = "
+				+ getRentalPricePerDay() + ", hasGear = " + hasGear + ", engineCapacity = " + engineCapacity + "]";
 	}
 
 }
